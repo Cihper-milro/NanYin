@@ -1,0 +1,90 @@
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .interactive-section {
+        padding: 20px;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .practice-controls {
+        flex-direction: column;
+    }
+    
+    .dialect-select {
+        min-width: 100%;
+    }
+    
+    #map-container {
+        height: 350px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer-section {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero {
+        padding: 2.5rem 0;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .voice-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .voice-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .map-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .stories-grid {
+        grid-template-columns: 1fr;
+    }
+}

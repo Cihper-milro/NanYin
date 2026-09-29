@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方言文化学习平台 - AI方言陪练、古诗词吟诵、亲子故事屋、方言文化地图</title>
+    
+    <!-- 外部资源 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <!-- 本地样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>方言文化学习平台</h1>
+                        <p>传承方言文化，守护语言多样性</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">首页</a></li>
+                        <li><a href="#dialect">AI方言陪练</a></li>
+                        <li><a href="#poetry">古诗词吟诵</a></li>
+                        <li><a href="#story">亲子故事屋</a></li>
+                        <li><a href="#audio">方言示例播放</a></li>
+                        <li><a href="#map">方言文化地图</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主标题区域 -->
+    <section class="hero">
+        <div class="container">
+            <h2>探索方言魅力，传承文化瑰宝</h2>
+            <p>通过AI技术让方言学习变得生动有趣，结合古诗词吟诵、亲子故事和方言地图，打造全方位的方言文化学习体验</p>
+            <a href="#dialect" class="btn">立即体验</a>
+        </div>
+    </section>
+
+    <!-- 功能特色网格 -->
+    <div class="container">
+        <section class="feature-grid">
+            <!-- AI方言陪练 -->
+            <div class="feature-card dialect-coach">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI方言陪练</h3>
+                </div>
+                <div class="feature-content">
+                    <p>通过AI智能语音识别和合成技术，为您提供个性化的方言发音训练，实时反馈和纠正您的发音，让您快速掌握地道方言。</p>
+                    <a href="#dialect" class="btn">开始练习</a>
+                </div>
+            </div>
+            
+            <!-- 古诗词吟诵 -->
+            <div class="feature-card poetry-recitation">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>古诗词吟诵</h3>
+                </div>
+                <div class="feature-content">
+                    <p>用各地方言吟诵经典古诗词，体验不同方言独特的音韵美感，感受传统文化与方言的完美结合。</p>
+                    <a href="#poetry" class="btn">聆听吟诵</a>
+                </div>
+            </div>
+            
+            <!-- 亲子故事屋 -->
+            <div class="feature-card story-house">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>亲子故事屋</h3>
+                </div>
+                <div class="feature-content">
+                    <p>精选各地方言版本的经典儿童故事，让家长和孩子一起在故事中学习方言，增进亲子关系的同时传承语言文化。</p>
+                    <a href="#story" class="btn">进入故事屋</a>
+                </div>
+            </div>
+            
+            <!-- 方言文化地图 -->
+            <div class="feature-card culture-map">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>方言文化地图</h3>
+                </div>
+                <div class="feature-content">
+                    <p>直观展示中国各地方言分布情况，点击地图区域可了解当地方言特点、文化背景和代表性词汇。</p>
+                    <a href="#map" class="btn">查看地图</a>
+                </div>
+            </div>
+            
+            <!-- 方言示例播放 -->
+            <div class="feature-card audio-player">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>方言示例播放</h3>
+                </div>
+                <div class="feature-content">
+                    <p>播放各地方言的音频示例，包括日常对话、特色词汇和语音特点，帮助您直观感受不同方言的发音特色。</p>
+                    <a href="#audio" class="btn">播放示例</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI方言陪练交互区域 -->
+        <section id="dialect" class="interactive-section">
+            <h2><i class="fas fa-robot"></i> AI方言陪练</h2>
+            <div class="dialect-practice">
+                <div class="practice-controls">
+                    <select class="dialect-select" id="dialect-select">
+                        <option value="">选择方言类型</option>
+                        <option value="cantonese">粤语（广东话）</option>
+                        <option value="shanghainese">上海话（吴语）</option>
+                        <option value="sichuanese">四川话（西南官话）</option>
+                        <option value="minnan">闽南语（福建话）</option>
+                        <option value="hunanese">湖南话（湘语）</option>
+                        <option value="hakka">客家话</option>
+                    </select>
+                    
+                    <select class="dialect-select" id="phrase-select">
+                        <option value="">选择练习短语</option>
+                        <option value="greeting">问候语</option>
+                        <option value="daily">日常用语</option>
+                        <option value="food">美食相关</option>
+                        <option value="number">数字表达</option>
+                    </select>
+                    
+                    <button class="btn" id="generate-phrase">生成练习内容</button>
+                </div>
+                
+                <div class="practice-output">
+                    <div class="practice-text" id="practice-text">
+                        请选择方言类型和练习短语，AI将为您生成练习内容
+                    </div>
+                    <div class="voice-controls">
+                        <button class="voice-btn" id="play-btn">
+                            <i class="fas fa-play"></i> 播放示范
+                        </button>
+                        <button class="voice-btn record" id="record-btn">
+                            <i class="fas fa-microphone"></i> 开始录音
+                        </button>
+                        <button class="voice-btn" id="evaluate-btn">
+                            <i class="fas fa-chart-bar"></i> 评估发音
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="feedback" style="display: none;">
+                    <h3>AI反馈：</h3>
+                    <p id="feedback-text"></p>
+                    <div id="score-display"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 古诗词吟诵区域 -->
+        <section id="poetry" class="interactive-section">
+            <h2><i class="fas fa-book-open"></i> 古诗词吟诵</h2>
+            <div class="practice-controls">
+                <select class="dialect-select" id="poetry-dialect">
+                    <option value="">选择吟诵方言</option>
+                    <option value="cantonese">粤语吟诵</option>
+                    <option value="shanghainese">上海话吟诵</option>
+                    <option value="sichuanese">四川话吟诵</option>
+                    <option value="minnan">闽南语吟诵</option>
+                </select>
+                
+                <select class="dialect-select" id="poetry-select">
+                    <option value="">选择古诗词</option>
+                    <option value="quiet-night-thought">《静夜思》李白</option>
+                    <option value="spring-morning">《春晓》孟浩然</option>
+                    <option value="ascend-stork-tower">《登鹳雀楼》王之涣</option>
+                    <option value="return-native">《回乡偶书》贺知章</option>
+                </select>
+                
+                <button class="btn" id="play-poetry">播放吟诵</button>
+            </div>
+            
+            <div class="practice-output" style="margin-top: 20px;">
+                <h3 id="poetry-title">古诗词内容将显示在这里</h3>
+                <div id="poetry-content" style="text-align: center; font-size: 1.2rem; line-height: 1.8; padding: 20px;"></div>
+                <div class="voice-controls" style="justify-content: center;">
+                    <button class="voice-btn" id="slow-play">
+                        <i class="fas fa-tachometer-alt"></i> 慢速播放
+                    </button>
+                    <button class="voice-btn" id="follow-read">
+                        <i class="fas fa-user-check"></i> 跟读模式
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 亲子故事屋 -->
+        <section id="story" class="interactive-section">
+            <h2><i class="fas fa-home"></i> 亲子故事屋</h2>
+            <p>选择方言，与孩子一起聆听经典故事</p>
+            
+            <div class="practice-controls">
+                <select class="dialect-select" id="story-dialect">
+                    <option value="">选择故事方言</option>
+                    <option value="cantonese">粤语故事</option>
+                    <option value="shanghainese">上海话故事</option>
+                    <option value="sichuanese">四川话故事</option>
+                    <option value="mandarin">普通话故事</option>
+                </select>
+                
+                <button class="btn" id="play-story">播放故事</button>
+                <button class="btn" id="pause-story">暂停</button>
+            </div>
+            
+            <div class="stories-grid">
+                <div class="story-card">
+                    <h4>三只小猪</h4>
+                    <p>经典童话故事，讲述三只小猪建造房屋抵御大灰狼的智慧故事。</p>
+                    <button class="btn story-play-btn" data-story="1">播放故事</button>
+                </div>
+                
+                <div class="story-card">
+                    <h4>龟兔赛跑</h4>
+                    <p>伊索寓言经典，教育孩子不要骄傲，坚持就是胜利。</p>
+                    <button class="btn story-play-btn" data-story="2">播放故事</button>
+                </div>
+                
+                <div class="story-card">
+                    <h4>小马过河</h4>
+                    <p>中国经典寓言，告诉孩子要勇于尝试，亲自实践才能获得真知。</p>
+                    <button class="btn story-play-btn" data-story="3">播放故事</button>
+                </div>
+                
+                <div class="story-card">
+                    <h4>狼来了</h4>
+                    <p>经典诚信教育故事，教育孩子要诚实，不要说谎。</p>
+                    <button class="btn story-play-btn" data-story="4">播放故事</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 方言文化地图 -->
+        <section id="map" class="interactive-section">
+            <h2><i class="fas fa-map-marked-alt"></i> 方言文化地图</h2>
+            <p>点击地图上的区域，了解当地方言文化特色</p>
+            
+            <div id="map-container" style="height: 500px;"></div>
+            
+            <div class="map-info">
+                <!-- 方言区域图例已删除 -->
+            </div>
+            
+            <div id="map-details" style="display:none; margin-top:20px; padding:20px; background:#f8f9fa;">
+                <h3 id="region-name"></h3>
+                <div id="region-info"></div>
+                <div id="region-phrases"></div>
+            </div>
+        </section>
+
+        <!-- 方言示例播放区域 -->
+        <section id="audio" class="interactive-section">
+            <h2><i class="fas fa-music"></i> 方言示例播放</h2>
+            <p>选择方言类型，播放对应的音频示例，感受不同方言的发音特色</p>
+            
+            <div class="audio-player-container">
+                <div class="audio-controls">
+                    <select class="dialect-select" id="audio-dialect">
+                        <option value="">选择方言类型</option>
+                        <option value="meizhou">梅州话（客家话）</option>
+                        <option value="danjia">疍家话（水上居民）</option>
+                        <option value="leizhou">雷州话（闽语分支）</option>
+                        <option value="shaoguan">韶关话（粤北）</option>
+                    </select>
+                    
+                    <select class="audio-select" id="audio-select" style="display: none;">
+                        <option value="">选择音频文件</option>
+                    </select>
+                    
+                    <button class="btn audio-play-btn" id="play-audio">
+                        <i class="fas fa-play"></i> 播放
+                    </button>
+                    
+                    <button class="btn audio-pause-btn" id="pause-audio" style="display: none;">
+                        <i class="fas fa-pause"></i> 暂停
+                    </button>
+                </div>
+                
+                <div class="audio-player">
+                    <audio id="dialect-audio" controls style="width: 100%; margin-top: 20px;">
+                        <source src="" type="audio/mp4">
+                        <source src="" type="audio/mpeg">
+                        您的浏览器不支持音频播放。
+                    </audio>
+                </div>
+                
+                <div class="audio-info" id="audio-info" style="margin-top: 20px; display: none;">
+                    <h4>当前播放：<span id="current-audio-name"></span></h4>
+                    <p id="audio-description"></p>
+                    <div id="audio-playlist" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>方言文化学习平台</h3>
+                    <p>致力于保护和传承中国各地方言文化，通过科技手段让方言学习更加生动、有趣、高效。</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>功能导航</h3>
+                    <ul class="footer-links">
+                        <li><a href="#dialect">AI方言陪练</a></li>
+                        <li><a href="#poetry">古诗词吟诵</a></li>
+                        <li><a href="#story">亲子故事屋</a></li>
+                        <li><a href="#audio">方言示例播放</a></li>
+                        <li><a href="#map">方言文化地图</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contact@dialect-learning.com</li>
+                        <li><i class="fas fa-phone"></i> 400-123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 北京市海淀区中关村</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 方言文化学习平台. 保留所有权利. | 设计用于文化教育目的</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 外部JavaScript库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    
+    <!-- 本地JavaScript文件 -->
+    <script src="js/utils.js"></script>
+    <script src="js/dialect-trainer.js"></script>
+    <script src="js/poetry-reciter.js"></script>
+    <script src="js/story-house.js"></script>
+    <script src="js/dialect-map.js"></script>
+    <script src="js/audio-player.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
