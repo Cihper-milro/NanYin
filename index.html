@@ -410,7 +410,13 @@
                     <div class="voice-controls">
                         <button class="voice-btn" id="play-btn"><i class="fas fa-play"></i> 播放示范</button>
                         <button class="voice-btn record" id="record-btn"><i class="fas fa-microphone"></i> 开始录音</button>
+                        <button class="voice-btn" id="play-recording" disabled><i class="fas fa-play"></i> 播放录音</button>
                         <button class="voice-btn" id="evaluate-btn"><i class="fas fa-chart-bar"></i> 评估发音</button>
+                    </div>
+                    <div id="recording-info" style="display: none; margin-top: 20px; padding: 16px 20px; background: #FFFFFF; border-radius: 12px; border: 1px solid rgba(198, 161, 91, 0.2); text-align: left;">
+                        <strong style="font-family: var(--font-title); color: var(--primary);">我的录音</strong>
+                        <p id="recording-detail" style="margin-top: 6px; color: var(--text-muted); font-size: 0.9rem;"></p>
+                        <audio id="recorded-audio" controls style="width: 100%; margin-top: 10px;"></audio>
                     </div>
                 </div>
                 <div id="feedback" style="display: none;">
