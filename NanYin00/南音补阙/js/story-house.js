@@ -1,5 +1,7 @@
 // 亲子故事屋模块
 const StoryHouse = {
+    isInitialized: false,
+
     // 故事数据
     stories: [
         {
@@ -34,6 +36,12 @@ const StoryHouse = {
 
     // 初始化
     init: function() {
+        if (this.isInitialized) {
+            console.log('亲子故事屋已经初始化，跳过');
+            return;
+        }
+        this.isInitialized = true;
+
         this.bindEvents();
         this.renderStories();
     },
@@ -64,6 +72,11 @@ const StoryHouse = {
     // 渲染故事列表
     renderStories: function() {
         const storiesGrid = document.querySelector('.stories-grid');
+        if (!storiesGrid) {
+            console.warn('未找到 .stories-grid 容器，跳过故事列表渲染');
+            return;
+        }
+
         storiesGrid.innerHTML = '';
         
         this.stories.forEach(story => {

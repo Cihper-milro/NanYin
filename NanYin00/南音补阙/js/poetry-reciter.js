@@ -34,19 +34,28 @@ const PoetryReciter = {
         const self = this;
         
         // 播放吟诵
-        document.getElementById('play-poetry').addEventListener('click', function() {
-            self.playPoetryRecitation();
-        });
+        const playButton = document.getElementById('play-poetry');
+        if (playButton) {
+            playButton.addEventListener('click', function() {
+                self.playPoetryRecitation();
+            });
+        }
 
         // 慢速播放
-        document.getElementById('slow-play').addEventListener('click', function() {
-            self.playSlowRecitation();
-        });
+        const slowButton = document.getElementById('slow-play');
+        if (slowButton) {
+            slowButton.addEventListener('click', function() {
+                self.playSlowRecitation();
+            });
+        }
 
         // 跟读模式
-        document.getElementById('follow-read').addEventListener('click', function() {
-            self.followReadMode();
-        });
+        const followButton = document.getElementById('follow-read');
+        if (followButton) {
+            followButton.addEventListener('click', function() {
+                self.followReadMode();
+            });
+        }
     },
 
     // 播放古诗词吟诵

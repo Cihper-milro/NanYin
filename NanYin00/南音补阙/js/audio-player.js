@@ -4,38 +4,43 @@ const AudioPlayer = {
     playButton: null,
     pauseButton: null,
     dialectSelect: null,
+    clipSelect: null,
     currentAudio: null,
+    currentClip: null,
     isInitialized: false,
     
-    // 音频数据配置
+    // 音频数据配置（与 audios/ 目录一一对应，共 7 段录音，新增录音后需同步这里）
     audioFiles: {
         'meizhou': {
             name: '梅州话',
+            description: '客家话分支，梅州地区方言，保留古汉语特点。',
             files: [
+                { name: '他把橘子剥了皮，但是没吃', file: './audios/梅州话/梅州话（他把橘子剥了皮，但是没吃）.m4a' },
                 { name: '他们把教室都装上了空调', file: './audios/梅州话/梅州话（他们把教室都装上了空调）.m4a' }
-            ],
-            description: '客家话分支，梅州地区方言，保留古汉语特点。'
+            ]
         },
         'danjia': {
             name: '疍家话',
+            description: '水上居民方言，主要分布在广东沿海地区。',
             files: [
+                { name: '河里游着好多小鱼', file: './audios/疍家话/疍家话（河里游着好多小鱼）.m4a' },
                 { name: '他们把教室都装上了空调', file: './audios/疍家话/疍家话（他们把教室都装上了空调）.m4a' }
-            ],
-            description: '水上居民方言，主要分布在广东沿海地区。'
+            ]
         },
         'leizhou': {
             name: '雷州话',
+            description: '雷州半岛方言，属于闽语分支。',
             files: [
+                { name: '你去洗碗', file: './audios/雷州话/雷州话（你去洗碗）.m4a' },
                 { name: '他们把教室都装上了空调', file: './audios/雷州话/雷州话（他们把教室都装上了空调）.m4a' }
-            ],
-            description: '雷州半岛方言，属于闽语分支。'
+            ]
         },
         'shaoguan': {
             name: '韶关话',
+            description: '粤北韶关地区方言，具有独特的地方特色。',
             files: [
-                { name: '他们把教室都装上了空调', file: './audios/广东韶关话(他们把教室都装上了空调).m4a' }
-            ],
-            description: '粤北韶关地区方言，具有独特的地方特色。'
+                { name: '他们把教室都装上了空调', file: './audios/韶关话/广东韶关话(他们把教室都装上了空调).m4a' }
+            ]
         }
     },
 
@@ -58,12 +63,14 @@ const AudioPlayer = {
         this.playButton = document.getElementById('play-audio');
         this.pauseButton = document.getElementById('pause-audio');
         this.dialectSelect = document.getElementById('audio-dialect');
+        this.clipSelect = document.getElementById('audio-clip');
         
         console.log('找到的元素:', {
             audioElement: !!this.audioElement,
             playButton: !!this.playButton,
             pauseButton: !!this.pauseButton,
-            dialectSelect: !!this.dialectSelect
+            dialectSelect: !!this.dialectSelect,
+            clipSelect: !!this.clipSelect
         });
         
         if (!this.audioElement || !this.playButton || !this.pauseButton || !this.dialectSelect) {
@@ -107,6 +114,22 @@ const AudioPlayer = {
             console.log('方言选择变化:', this.value);
             self.onDialectChange(this.value);
         };
+
+        // 音频片段选择变化事件
+        if (this.clipSelect) {
+            this.clipSelect.onchange = function() {
+                console.log('音频片段选择变化:', this.value);
+                self.onClipChange();
+            };
+        }
+
+        // 播放结束后恢复播放按钮状态
+        this.audioElement.onended = function() {
+            self.showPlayButton();
+        };
+
+        // 初始化时按当前方言填充片段列表
+        this.populateClips(this.dialectSelect.value);
         
         console.log('所有事件绑定完成');
     },
@@ -131,11 +154,17 @@ const AudioPlayer = {
             return;
         }
         
+        const clip = this.getSelectedClip(dialect);
+        if (!clip) {
+            Utils.showMessage('该方言暂无可播放的音频', 'warning');
+            return;
+        }
+
         this.currentAudio = audioData;
+        this.currentClip = clip;
         
         if (audioData.files && audioData.files.length > 0) {
-            const firstAudio = audioData.files[0];
-            const audioPath = firstAudio.file;
+            const audioPath = clip.file;
             
             console.log('准备播放音频:', audioPath);
             
@@ -145,9 +174,10 @@ const AudioPlayer = {
             
             // 设置音频源
             this.audioElement.src = audioPath;
+            this.audioElement.load();
             
             // 显示音频信息
-            this.showAudioInfo(audioData, firstAudio);
+            this.showAudioInfo(audioData, clip);
             
             // 直接播放，不使用事件监听
             const self = this;
@@ -172,10 +202,78 @@ const AudioPlayer = {
 
     // 方言选择变化处理
     onDialectChange: function(dialect) {
-        if (dialect && this.currentAudio && this.currentAudio !== this.audioFiles[dialect]) {
+        // 切换方言时停止当前播放，回到可播放状态
+        if (this.audioElement) {
             this.audioElement.pause();
             this.audioElement.currentTime = 0;
-            this.showPlayButton();
+        }
+        this.showPlayButton();
+
+        this.currentAudio = null;
+        this.currentClip = null;
+
+        // 刷新该方言下的音频片段列表
+        this.populateClips(dialect);
+
+        if (dialect && this.audioFiles[dialect]) {
+            this.showAudioInfo(this.audioFiles[dialect], this.getSelectedClip(dialect));
+        }
+    },
+
+    // 按方言填充可选的音频片段
+    populateClips: function(dialect) {
+        if (!this.clipSelect) {
+            return;
+        }
+
+        const audioData = dialect ? this.audioFiles[dialect] : null;
+        if (!audioData || !audioData.files || audioData.files.length === 0) {
+            this.clipSelect.innerHTML = '<option value="">' + (dialect ? '暂无可选音频' : '请先选择方言类型') + '</option>';
+            this.clipSelect.value = '';
+            return;
+        }
+
+        this.clipSelect.innerHTML = audioData.files.map(function(item, index) {
+            return '<option value="' + index + '">' + item.name + '</option>';
+        }).join('');
+
+        // 回到第一条，避免残留上一种方言的选择
+        this.clipSelect.value = '0';
+    },
+
+    // 取当前选中的音频片段，未选择时回退到第一条
+    getSelectedClip: function(dialect) {
+        const audioData = this.audioFiles[dialect];
+        if (!audioData || !audioData.files || audioData.files.length === 0) {
+            return null;
+        }
+
+        const index = this.clipSelect ? parseInt(this.clipSelect.value, 10) : 0;
+        if (isNaN(index) || index < 0 || index >= audioData.files.length) {
+            return audioData.files[0];
+        }
+
+        return audioData.files[index];
+    },
+
+    // 音频片段选择变化处理
+    onClipChange: function() {
+        const dialect = this.dialectSelect ? this.dialectSelect.value : '';
+        if (!dialect) {
+            return;
+        }
+
+        // 切换片段时停止当前播放
+        if (this.audioElement) {
+            this.audioElement.pause();
+            this.audioElement.currentTime = 0;
+        }
+        this.showPlayButton();
+
+        const clip = this.getSelectedClip(dialect);
+        if (clip) {
+            this.currentClip = clip;
+            this.showAudioInfo(this.audioFiles[dialect], clip);
         }
     },
 

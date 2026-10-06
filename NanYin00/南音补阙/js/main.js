@@ -62,16 +62,24 @@ const App = {
     // 初始化各功能模块
     initModules: function() {
         // 初始化方言地图（必须第一个初始化）
-        DialectMap.init();
+        this.safeInit('DialectMap', DialectMap);
         
         // 初始化其他模块
-        DialectTrainer.init();
-        PoetryReciter.init();
-        StoryHouse.init();
-        AudioPlayer.init();
-        StoryHouse.init();
+        this.safeInit('DialectTrainer', DialectTrainer);
+        this.safeInit('PoetryReciter', PoetryReciter);
+        this.safeInit('StoryHouse', StoryHouse);
+        this.safeInit('AudioPlayer', AudioPlayer);
         
         console.log('所有模块初始化完成');
+    },
+
+    // 单个模块初始化失败时只记录日志，不影响其他模块
+    safeInit: function(name, module) {
+        try {
+            module.init();
+        } catch (error) {
+            console.error(name + ' 初始化失败:', error);
+        }
     },
 
     // 绑定全局事件
@@ -110,9 +118,8 @@ const App = {
             }
             // Esc 隐藏地图详情
             else if (e.key === 'Escape') {
-                const mapDetails = document.getElementById('map-details');
-                if (mapDetails.style.display !== 'none') {
-                    mapDetails.style.display = 'none';
+                if (DialectMap.currentRegion) {
+                    DialectMap.hideRegionDetails();
                 }
             }
         });

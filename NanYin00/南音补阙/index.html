@@ -454,9 +454,7 @@
                 <button class="btn outline" id="pause-story">暂停</button>
             </div>
             <div class="stories-grid">
-                <div class="story-card"><h4>三只小猪</h4><p>经典童话故事，讲述三只小猪建造房屋抵御大灰狼的智慧故事。</p><button class="btn small story-play-btn" data-story="1">播放故事</button></div>
-                <div class="story-card"><h4>龟兔赛跑</h4><p>伊索寓言经典，教育孩子不要骄傲，坚持就是胜利。</p><button class="btn small story-play-btn" data-story="2">播放故事</button></div>
-                <div class="story-card"><h4>小马过河</h4><p>中国经典寓言，告诉孩子要勇于尝试，亲自实践才能获得真知。</p><button class="btn small story-play-btn" data-story="3">播放故事</button></div>
+                <!-- 故事卡片由 js/story-house.js 的 renderStories() 动态渲染，请勿在此手写 -->
             </div>
         </section>
 
@@ -477,15 +475,23 @@
                     <option value="">选择方言类型</option>
                     <option value="meizhou">梅州话（客家话）</option>
                     <option value="danjia">疍家话（水上居民）</option>
+                    <option value="leizhou">雷州话（闽语分支）</option>
+                    <option value="shaoguan">韶关话（粤北）</option>
+                </select>
+                <select class="dialect-select" id="audio-clip">
+                    <option value="">选择音频片段</option>
                 </select>
                 <button class="btn" id="play-audio"><i class="fas fa-play"></i> 播放</button>
                 <button class="btn outline" id="pause-audio" style="display: none;"><i class="fas fa-pause"></i> 暂停</button>
             </div>
             <div class="audio-player">
                 <audio id="dialect-audio" controls style="width: 100%; margin-top: 10px;">
-                    <source src="" type="audio/mp4">
                     您的浏览器不支持音频播放。
                 </audio>
+                <div id="audio-info" style="display: none; margin-top: 16px; padding: 16px 20px; background: #FAF8F5; border-radius: 12px; border: 1px solid rgba(198, 161, 91, 0.2);">
+                    <strong id="current-audio-name"></strong>
+                    <p id="audio-description" style="margin-top: 6px; color: var(--text-muted); font-size: 0.9rem;"></p>
+                </div>
             </div>
         </section>
     </div>

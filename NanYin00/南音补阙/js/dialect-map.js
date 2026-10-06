@@ -4,10 +4,38 @@ const DialectMap = {
     markers: [],
     currentRegion: null,
 
+    // 方言区域数据（说明文案与 js/audio-player.js 一致，词汇复用 AI 方言陪练模块）
+    regions: [
+        {
+            name: "梅州话",
+            coords: [24.3, 116.1],
+            info: "客家话分支，梅州地区方言，保留古汉语特点。",
+            phraseKey: "hakka"
+        },
+        {
+            name: "疍家话",
+            coords: [23.1, 113.3],
+            info: "水上居民方言，主要分布在广东沿海地区。",
+            phraseKey: ""
+        },
+        {
+            name: "雷州话",
+            coords: [20.9, 110.1],
+            info: "雷州半岛方言，属于闽语分支。",
+            phraseKey: "minnan"
+        },
+        {
+            name: "韶关话",
+            coords: [24.8, 113.6],
+            info: "粤北韶关地区方言，具有独特的地方特色。",
+            phraseKey: ""
+        }
+    ],
+
     // 初始化地图
     init: function() {
         console.log('开始初始化地图...');
-        
+
         const mapContainer = document.getElementById('map-container');
         if (!mapContainer) {
             console.error('地图容器 #map-container 未找到');
@@ -58,32 +86,94 @@ const DialectMap = {
         }
     },
 
-    // 添加简单的标记
+    // 添加方言区域标记
     addSimpleMarkers: function() {
         if (!this.map) {
             console.error('地图未初始化，无法添加标记');
             return;
         }
 
-        // 4个方言区域的简单标记
-        const regions = [
-            {name: "梅州话", coords: [24.3, 116.1]},
-            {name: "疍家话", coords: [23.1, 113.3]},
-            {name: "雷州话", coords: [20.9, 110.1]},
-            {name: "韶关话", coords: [24.8, 113.6]}
-        ];
-        
-        regions.forEach((region) => {
+        const self = this;
+
+        this.regions.forEach((region) => {
             // 创建简单的标记
             const marker = L.marker(region.coords).addTo(this.map);
-            
+
             // 添加简单的弹出信息
             marker.bindPopup(`<b>${region.name}</b><br>点击查看详情`);
-            
+
+            // 点击标记时，在下方详情面板展示该方言的信息
+            marker.on('click', function() {
+                self.showRegionDetails(region);
+            });
+
             // 保存标记引用
             this.markers.push(marker);
         });
-        
-        console.log('添加了', regions.length, '个方言标记');
+
+        console.log('添加了', this.regions.length, '个方言标记');
+    },
+
+    // 展示方言详情
+    showRegionDetails: function(region) {
+        const details = document.getElementById('map-details');
+        if (!details || !region) {
+            return;
+        }
+
+        this.currentRegion = region;
+
+        const nameElement = document.getElementById('region-name');
+        const infoElement = document.getElementById('region-info');
+        const phrasesElement = document.getElementById('region-phrases');
+
+        if (nameElement) {
+            nameElement.textContent = region.name;
+        }
+        if (infoElement) {
+            infoElement.textContent = region.info;
+        }
+        if (phrasesElement) {
+            const phrases = this.getRegionPhrases(region);
+            if (phrases.length > 0) {
+                phrasesElement.innerHTML =
+                    '<h4 style="font-family: var(--font-title); margin-bottom: 12px;">常用说法</h4>' +
+                    '<ul style="list-style: none;">' +
+                    phrases.map(item => `<li style="margin-bottom: 8px;">${item}</li>`).join('') +
+                    '</ul>';
+                phrasesElement.style.display = 'block';
+            } else {
+                phrasesElement.innerHTML = '';
+                phrasesElement.style.display = 'none';
+            }
+        }
+
+        details.style.display = 'block';
+        Utils.scrollToElement('map-details', 100);
+    },
+
+    // 隐藏方言详情面板（供 Esc 快捷键等外部调用）
+    hideRegionDetails: function() {
+        const details = document.getElementById('map-details');
+        if (details) {
+            details.style.display = 'none';
+        }
+        this.currentRegion = null;
+    },
+
+    // 复用 AI 方言陪练模块中已有的词汇数据，避免两处维护
+    getRegionPhrases: function(region) {
+        if (!region.phraseKey || typeof DialectTrainer === 'undefined') {
+            return [];
+        }
+
+        const data = DialectTrainer.dialectPhrases && DialectTrainer.dialectPhrases[region.phraseKey];
+        if (!data) {
+            return [];
+        }
+
+        return Object.keys(data).map(function(key) {
+            return data[key];
+        });
     }
 };
