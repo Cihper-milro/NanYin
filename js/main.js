@@ -61,8 +61,9 @@ const App = {
 
     // 初始化各功能模块
     initModules: function() {
-        // 初始化方言地图（必须第一个初始化）
-        this.safeInit('DialectMap', DialectMap);
+        // 方言地图改为懒初始化：Leaflet 有 144KB，且一初始化就会立刻请求十几张地图瓦片，
+        // 放在首屏一起加载会明显拖慢开场画面，因此改到滚动到地图附近时再初始化（见 lazyInitMap）。
+        this.lazyInitMap();
         
         // 初始化其他模块
         this.safeInit('DialectTrainer', DialectTrainer);
@@ -71,6 +72,40 @@ const App = {
         this.safeInit('AudioPlayer', AudioPlayer);
         
         console.log('所有模块初始化完成');
+    },
+
+    // 方言地图懒初始化：滚动到地图附近（提前 400px）才开始加载
+    lazyInitMap: function() {
+        const mapContainer = document.getElementById('map-container');
+        if (!mapContainer) {
+            return;
+        }
+
+        if (!('IntersectionObserver' in window)) {
+            this.ensureMapInit();
+            return;
+        }
+
+        const self = this;
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    observer.disconnect();
+                    self.ensureMapInit();
+                }
+            });
+        }, { rootMargin: '400px 0px' });
+
+        observer.observe(mapContainer);
+    },
+
+    // 真正初始化地图，重复调用只生效一次
+    ensureMapInit: function() {
+        if (this.mapInitialized) {
+            return;
+        }
+        this.mapInitialized = true;
+        this.safeInit('DialectMap', DialectMap);
     },
 
     // 单个模块初始化失败时只记录日志，不影响其他模块
@@ -109,12 +144,17 @@ const App = {
             else if (e.altKey && e.key === '2') {
                 e.preventDefault();
                 Utils.scrollToElement('map');
-                // 高亮第一个方言区域作为示例
-                setTimeout(() => {
+                // 地图已改为懒加载：这里补一次初始化，并等标记就绪后高亮第一个方言区域
+                this.ensureMapInit();
+                let mapTries = 0;
+                const mapTimer = setInterval(() => {
                     if (DialectMap.markers && DialectMap.markers.length > 0) {
                         DialectMap.markers[0].openPopup();
+                        clearInterval(mapTimer);
+                    } else if (++mapTries > 20) {
+                        clearInterval(mapTimer);
                     }
-                }, 500);
+                }, 200);
             }
             // Esc 隐藏地图详情
             else if (e.key === 'Escape') {

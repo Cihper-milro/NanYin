@@ -10,7 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+    <!-- Leaflet 样式：地图在页面很靠下的位置，改为非阻塞加载，避免拖慢首屏渲染 -->
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="vendor/leaflet/leaflet.css" /></noscript>
+    <!-- 开场山水图属于首屏内容，提前以高优先级下载 -->
+    <link rel="preload" as="image" href="img/shanshui.png" fetchpriority="high" />
     
     <style>
         :root {
@@ -233,7 +237,7 @@
         <div class="splash-bg-text center-right">传承</div>
         
         <div id="shanshui-bg">
-            <img src="img/shanshui.png" alt="水墨山水">
+            <img src="img/shanshui.png" alt="水墨山水" decoding="async" fetchpriority="high">
         </div>
 
         <div class="splash-content">
@@ -252,7 +256,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon"><img src="img/logo.png" alt="Logo"></div>
+                    <div class="logo-icon"><img src="img/logo.png" alt="Logo" decoding="async"></div>
                     <div class="logo-text">
                         <h1>方言文化学习平台</h1>
                         <p>传承方言文化 · 守护语言多样性</p>
@@ -277,11 +281,11 @@
     <section class="hero" id="main-hero">
         <div class="container">
             <div class="hero-title-wrapper">
-                <img src="img/xaingyun.png" class="cloud-img cloud-l1" alt="祥云">
-                <img src="img/xaingyun.png" class="cloud-img cloud-l2" alt="祥云">
+                <img src="img/xaingyun.png" loading="lazy" decoding="async" class="cloud-img cloud-l1" alt="祥云">
+                <img src="img/xaingyun.png" loading="lazy" decoding="async" class="cloud-img cloud-l2" alt="祥云">
                 <h2>拾遗南国乡音，焕新方言活力</h2>
-                <img src="img/xaingyun.png" class="cloud-img cloud-r1" alt="祥云">
-                <img src="img/xaingyun.png" class="cloud-img cloud-r2" alt="祥云">
+                <img src="img/xaingyun.png" loading="lazy" decoding="async" class="cloud-img cloud-r1" alt="祥云">
+                <img src="img/xaingyun.png" loading="lazy" decoding="async" class="cloud-img cloud-r2" alt="祥云">
             </div>
             <div class="hero-subtitle">
                 <p>AI赋能古诗吟诵，亲子故事趣味共读</p>
@@ -432,8 +436,9 @@
             <div class="practice-controls">
                 <select class="dialect-select" id="poetry-dialect">
                     <option value="">选择吟诵方言</option>
-                    <option value="cantonese">粤语吟诵</option>
-                    <option value="shanghainese">上海话吟诵</option>
+                    <option value="yunnan">云南话吟诵</option>
+                    <option value="anhui">安徽话吟诵</option>
+                    <option value="henan">河南话吟诵</option>
                 </select>
                 <select class="dialect-select" id="poetry-select">
                     <option value="">选择古诗词</option>
@@ -491,7 +496,7 @@
                 <button class="btn outline" id="pause-audio" style="display: none;"><i class="fas fa-pause"></i> 暂停</button>
             </div>
             <div class="audio-player">
-                <audio id="dialect-audio" controls style="width: 100%; margin-top: 10px;">
+                <audio id="dialect-audio" controls preload="none" style="width: 100%; margin-top: 10px;">
                     您的浏览器不支持音频播放。
                 </audio>
                 <div id="audio-info" style="display: none; margin-top: 16px; padding: 16px 20px; background: #FAF8F5; border-radius: 12px; border: 1px solid rgba(198, 161, 91, 0.2);">
@@ -524,15 +529,15 @@
         </div>
     </footer>
 
-    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/leaflet/leaflet.js" defer></script>
     
-    <script src="js/utils.js"></script>
-    <script src="js/dialect-trainer.js"></script>
-    <script src="js/poetry-reciter.js"></script>
-    <script src="js/story-house.js"></script>
-    <script src="js/dialect-map.js"></script>
-    <script src="js/audio-player.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/utils.js" defer></script>
+    <script src="js/dialect-trainer.js" defer></script>
+    <script src="js/poetry-reciter.js" defer></script>
+    <script src="js/story-house.js" defer></script>
+    <script src="js/dialect-map.js" defer></script>
+    <script src="js/audio-player.js" defer></script>
+    <script src="js/main.js" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
