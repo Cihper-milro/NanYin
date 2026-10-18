@@ -1,7 +1,8 @@
 // 古诗词吟诵模块
 const PoetryReciter = {
     // 吟诵音频配置（与 audios/ 目录一一对应，新增录音后需同步这里）
-    // 目前 云南话 / 安徽话 / 河南话 各有一段《静夜思》和一段《春晓》
+    // 目前 云南话 / 安徽话 / 河南话 / 粤语 各有一段《静夜思》和一段《春晓》，
+    // 客家话有「灯塔话」「李田话」两个念法人，各占一个条目，方便同一首诗对比着听
     recitationAudios: {
         'yunnan': {
             name: '云南话',
@@ -22,6 +23,27 @@ const PoetryReciter = {
             files: {
                 'quiet-night-thought': './audios/河南话/静夜思河南话.m4a',
                 'spring-morning': './audios/河南话/春晓河南话.m4a'
+            }
+        },
+        'cantonese': {
+            name: '粤语',
+            files: {
+                'quiet-night-thought': './audios/粤语/静夜思 粤语.m4a',
+                'spring-morning': './audios/粤语/春晓 粤语.m4a'
+            }
+        },
+        'kejia-dengta': {
+            name: '客家话（灯塔话）',
+            files: {
+                'quiet-night-thought': './audios/客家话/静夜思 灯塔话.m4a',
+                'spring-morning': './audios/客家话/春晓 灯塔话.m4a'
+            }
+        },
+        'kejia-litian': {
+            name: '客家话（李田话）',
+            files: {
+                'quiet-night-thought': './audios/客家话/静夜思 李田话.m4a',
+                'spring-morning': './audios/客家话/春晓 李田话.m4a'
             }
         }
     },

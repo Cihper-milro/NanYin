@@ -1,4 +1,4 @@
-﻿# 系统文件
+# 系统文件
 .DS_Store
 Thumbs.db
 
@@ -8,3 +8,6 @@ Thumbs.db
 
 # 临时文件
 tst.text
+
+# 备份目录一律放在仓库外（D:\Program\Microsoft VS Code\文件\NanYin_项目备份），这里做保险
+_backup_*
