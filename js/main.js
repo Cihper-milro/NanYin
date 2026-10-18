@@ -68,6 +68,7 @@ const App = {
         // 初始化其他模块
         this.safeInit('DialectTrainer', DialectTrainer);
         this.safeInit('PoetryReciter', PoetryReciter);
+        this.safeInit('NurseryRhyme', NurseryRhyme);
         this.safeInit('StoryHouse', StoryHouse);
         this.safeInit('AudioPlayer', AudioPlayer);
         
